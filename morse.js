@@ -47,7 +47,6 @@ const morseCode = {
   "!": "-.-.--",
   ".": ".-.-.-",
   "-": "-....-",
-  "%": "----- -..-. -----",
   "+": ".-.-.",
   '"': ".-..-.",
   "?": "..--..",
@@ -73,23 +72,69 @@ function decodeWord(morse) {
 }
 
 export function encodeMorse(text) {
-  text = text.toLowerCase();
   let morse = "";
   for (let i = 0; i < text.length; i++) {
+    // A space is added between each char to separate them.
     let char = text[i];
-    if (encodeChar(char)) {
-      morse += encodeChar(char) + " ";
-    } else if (char == " ") {
-      morse += "/ ";
+    // If char is uppercase, add a carrot to annotate
+    if (isAlphanumericUppercase(char)) {
+      morse += "^ " + encodeChar(char.toLowerCase()) + " ";
+      // If char has a map add it
+    } else if (encodeChar(char.toLowerCase())) {
+      morse += encodeChar(char.toLowerCase()) + " ";
+    } else if (char.toLowerCase() == " ") {
+      // A word is separated by two spaces
+      morse += "  ";
     } else {
-      morse += char + " ";
+      // If a character has no mapping just add it as is.
+      morse += char.toLowerCase() + " ";
     }
   }
   return morse;
 }
 
+function isAlphanumericUppercase(str) {
+  if (!/^[a-zA-Z0-9]+$/.test(str)) {
+    return false; // Not alphanumeric
+  }
+  if (str !== str.toUpperCase()) {
+    return false; // Not uppercase
+  }
+  return true;
+}
+
+function uppercaseAtIndex(str, index) {
+  if (index >= str.length || index < 0) {
+    return str;
+  }
+  return (
+    str.substring(0, index) +
+    str.charAt(index).toUpperCase() +
+    str.substring(index + 1)
+  );
+}
+
 export function decodeMorse(morse) {
-  return morse.trim().split("/").map(decodeWord).join(" ");
+  return morse.trim().split("  ").map(decodeWord).join(" ");
+}
+
+export function decodeMorseWithCase(morse) {
+  let decodedWithCarrot = decodeMorse(morse);
+  let decodedNoCarrot = "";
+  let indexes = [];
+  for (let i = 0; i < decodedWithCarrot.length; i++) {
+    if (decodedWithCarrot.charAt(i) == "^") {
+      indexes.push(i);
+    } else {
+      decodedNoCarrot += decodedWithCarrot.charAt(i);
+    }
+  }
+
+  let decodedCased = decodedNoCarrot;
+  for (let j = 0; j < indexes.length; j++) {
+    decodedCased = uppercaseAtIndex(decodedCased, indexes[j] - j);
+  }
+  return decodedCased;
 }
 
 // Replace the original morse with the substitute variants.
