@@ -30,16 +30,23 @@ export default function Input() {
   return (
     <div className="flex flex-col grow px-10 py-10 gap-4">
       {/* Toggle for switching input and output */}
-      <div className="flex justify-between">
-        <div role="tablist" class="tabs tabs-lifted">
-          <a
-            role="tab"
-            class={isDecrypt ? "tab" : "tab tab-active"}
-            onClick={toggleDecrypt}
+      <div className="flex justify-between gap-1">
+        <button className="btn w-28 md:btn-wide" onClick={toggleDecrypt}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="size-6"
           >
-            Switch
-          </a>
-        </div>
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"
+            />
+          </svg>
+        </button>
         {/* The copy output button */}
         <button
           className="btn max-w-xs btn-ghost  btn-outline"

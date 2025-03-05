@@ -2,23 +2,23 @@
 
 ## About
 
-CustomMorse uses a modified International Morse Code that supports case-sensitivity and extra characters.
+CustomMorse uses a modified Morse Code that supports case-sensitivity and most symbols.
 
 ## Demo
 
 https://custom-morse.pages.dev/
 
-### Encryption
+### Encoding
 
-![title](https://i.imgur.com/d4qmNrO.png)
+![title](https://i.imgur.com/RdLuHNl.png)
 
-### Decryption
+### Decoding
 
-![title](https://i.imgur.com/jdu2pj5.png)
+![title](https://i.imgur.com/8QLwORi.png)
 
 ## Installation
 
-KanjiCrypt can be installed and run locally.
+CustomMorse can be installed and run locally.
 
 Make sure node is installed, then clone this repository.
 
@@ -27,10 +27,3 @@ npm install
 npm run build
 npm run preview
 ```
-
-## Implementation
-
-Created using Vite + React + Tailwind + daisyUI.
-
-- Website by [@ganud](https://github.com/ganud)
-- All of the encryption and decryption by [@GIitchedGadget](https://github.com/GIitchedGadget)
