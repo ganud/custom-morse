@@ -53,6 +53,21 @@ const morseCode = {
   "/": "-..-.",
   ";": "-.-.-.",
   _: "..--.-",
+  "`": "..----",
+  "~": "...---",
+  "\\": "-..---",
+  "|": "---.-",
+  "#": "...-.-",
+  $: "...-..-",
+  "%": "-..-.-",
+  參: "---.---", // This is morse for carrot. I use a bogus character for carrot inputs NOT from the result of encoding so it doesn't interfere with capitalization..
+  "*": ".-.--",
+  "{": "---.-.",
+  "}": "---..-",
+  "[": "-..-..",
+  "]": "-..--.",
+  "<": "....--",
+  ">": "--....",
 };
 
 // Return the encoded variant if it exists, else return undefined.
@@ -75,6 +90,8 @@ function decodeWord(morse) {
 
 export function encodeMorse(text) {
   let morse = "";
+  // Deliberate inputs of ^ are substituted by some bogus character to not interfere with capitalization.
+  text = text.replace(/\^/g, "參");
   for (let i = 0; i < text.length; i++) {
     // A space is added between each char to separate them.
     let char = text[i];
@@ -139,6 +156,8 @@ export function decodeMorseWithCase(morse) {
   for (let j = 0; j < indexes.length; j++) {
     decodedCased = uppercaseAtIndex(decodedCased, indexes[j] - j);
   }
+  // Revert the substitute character back to ^
+  decodedCased = decodedCased.replace(/\參/g, "^");
   return decodedCased;
 }
 

@@ -19,10 +19,8 @@ export default function Input() {
     output = decodeMorseWithCase(
       reverseMorse(input, mapping.dot, mapping.dash)
     );
-    // output = decodeMorse(input);
   } else {
     output = replaceMorse(encodeMorse(input), mapping.dot, mapping.dash);
-    // output = encodeMorse(input);
   }
 
   const toggleDecrypt = () => {
@@ -31,11 +29,10 @@ export default function Input() {
   };
   return (
     <div className="flex flex-col grow px-10 py-10 gap-4">
-      {/* encrypt decrypt navigation tabs */}
+      {/* Toggle for switching input and output */}
       <div className="flex justify-between">
         <div role="tablist" class="tabs tabs-lifted">
           <a
-            id="encryptTab"
             role="tab"
             class={isDecrypt ? "tab" : "tab tab-active"}
             onClick={toggleDecrypt}
@@ -43,6 +40,7 @@ export default function Input() {
             Switch
           </a>
         </div>
+        {/* The copy output button */}
         <button
           className="btn max-w-xs btn-ghost  btn-outline"
           onClick={() => {
@@ -57,7 +55,7 @@ export default function Input() {
         <textarea
           class="textarea grow resize-none"
           placeholder={
-            isDecrypt ? "Enter text to decrypt" : "Enter text to encrypt"
+            isDecrypt ? "Enter text to decode" : "Enter text to encode"
           }
           value={input}
           onChange={(e) => {
@@ -68,7 +66,7 @@ export default function Input() {
         <textarea
           class="textarea grow resize-none"
           value={output}
-          placeholder={isDecrypt ? "Decrypted output" : "Encrypted output"}
+          placeholder={isDecrypt ? "Decoded output" : "Encoded output"}
         ></textarea>
       </div>
       {/* input for key */}
@@ -79,6 +77,7 @@ export default function Input() {
           class="input input-bordered w-full max-w-xs"
           value={mapping.dot}
           onChange={(e) => {
+            // Essentially sets maxLength to 1, but also supports emojis.
             const inputValue = e.target.value;
             const firstCharacter = [...inputValue][0] || "";
             setMapping((prevMapping) => ({
