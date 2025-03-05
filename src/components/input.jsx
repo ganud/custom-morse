@@ -1,7 +1,7 @@
 import { useState } from "react";
 import {
   encodeMorse,
-  decodeMorse,
+  decodeMorseWithCase,
   replaceMorse,
   reverseMorse,
 } from "../../morse";
@@ -16,8 +16,9 @@ export default function Input() {
 
   let output = "";
   if (isDecrypt) {
-    console.log(reverseMorse(input, mapping.dot, mapping.dash));
-    output = decodeMorse(reverseMorse(input, mapping.dot, mapping.dash));
+    output = decodeMorseWithCase(
+      reverseMorse(input, mapping.dot, mapping.dash)
+    );
     // output = decodeMorse(input);
   } else {
     output = replaceMorse(encodeMorse(input), mapping.dot, mapping.dash);
@@ -26,9 +27,8 @@ export default function Input() {
 
   const toggleDecrypt = () => {
     setisDecrypt(!isDecrypt);
-    setInput("");
+    setInput(output);
   };
-
   return (
     <div className="flex flex-col grow px-10 py-10 gap-4">
       {/* encrypt decrypt navigation tabs */}
@@ -40,15 +40,7 @@ export default function Input() {
             class={isDecrypt ? "tab" : "tab tab-active"}
             onClick={toggleDecrypt}
           >
-            Encrypt
-          </a>
-          <a
-            id="decryptTab"
-            role="tab"
-            class={isDecrypt ? "tab tab-active" : "tab"}
-            onClick={toggleDecrypt}
-          >
-            Decrypt
+            Switch
           </a>
         </div>
         <button
@@ -87,9 +79,11 @@ export default function Input() {
           class="input input-bordered w-full max-w-xs"
           value={mapping.dot}
           onChange={(e) => {
+            const inputValue = e.target.value;
+            const firstCharacter = [...inputValue][0] || "";
             setMapping((prevMapping) => ({
               ...prevMapping,
-              dot: e.target.value,
+              dot: firstCharacter,
             }));
           }}
         />
@@ -99,9 +93,11 @@ export default function Input() {
           class="input input-bordered w-full max-w-xs"
           value={mapping.dash}
           onChange={(e) => {
+            const inputValue = e.target.value;
+            const firstCharacter = [...inputValue][0] || "";
             setMapping((prevMapping) => ({
               ...prevMapping,
-              dash: e.target.value,
+              dash: firstCharacter,
             }));
           }}
         />

@@ -51,6 +51,8 @@ const morseCode = {
   '"': ".-..-.",
   "?": "..--..",
   "/": "-..-.",
+  ";": "-.-.-.",
+  _: "..--.-",
 };
 
 // Return the encoded variant if it exists, else return undefined.
@@ -77,8 +79,8 @@ export function encodeMorse(text) {
     // A space is added between each char to separate them.
     let char = text[i];
     // If char is uppercase, add a carrot to annotate
-    if (isAlphanumericUppercase(char)) {
-      morse += "^ " + encodeChar(char.toLowerCase()) + " ";
+    if (isAlphaUppercase(char)) {
+      morse += "^" + encodeChar(char.toLowerCase()) + " ";
       // If char has a map add it
     } else if (encodeChar(char.toLowerCase())) {
       morse += encodeChar(char.toLowerCase()) + " ";
@@ -93,9 +95,9 @@ export function encodeMorse(text) {
   return morse;
 }
 
-function isAlphanumericUppercase(str) {
-  if (!/^[a-zA-Z0-9]+$/.test(str)) {
-    return false; // Not alphanumeric
+function isAlphaUppercase(str) {
+  if (!/^[a-zA-Z]+$/.test(str)) {
+    return false; // Not alpha
   }
   if (str !== str.toUpperCase()) {
     return false; // Not uppercase
@@ -114,11 +116,14 @@ function uppercaseAtIndex(str, index) {
   );
 }
 
+// Decode morse, where each character is delimited by a space and each word is delimited by two spaces.
 export function decodeMorse(morse) {
   return morse.trim().split("  ").map(decodeWord).join(" ");
 }
 
 export function decodeMorseWithCase(morse) {
+  // Add a space after ^ so it isn't confused as part of a character.
+  morse = morse.replace(/\^/g, "^ ");
   let decodedWithCarrot = decodeMorse(morse);
   let decodedNoCarrot = "";
   let indexes = [];
