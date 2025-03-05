@@ -92,9 +92,10 @@ export function encodeMorse(text) {
   let morse = "";
   // Deliberate inputs of ^ are substituted by some bogus character to not interfere with capitalization.
   text = text.replace(/\^/g, "參");
-  for (let i = 0; i < text.length; i++) {
+  let arr = Array.from(text); // Emojis may count as two chars, properly separate them as one.
+  for (let i = 0; i < arr.length; i++) {
     // A space is added between each char to separate them.
-    let char = text[i];
+    let char = arr[i];
     // If char is uppercase, add a carrot to annotate
     if (isAlphaUppercase(char)) {
       morse += "^" + encodeChar(char.toLowerCase()) + " ";
