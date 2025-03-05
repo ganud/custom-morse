@@ -3,6 +3,7 @@
 ## About
 
 CustomMorse uses a modified Morse Code that supports case-sensitivity and most symbols.
+The `.` and `-` symbols used for morse code can also be customized.
 
 ## Demo
 
