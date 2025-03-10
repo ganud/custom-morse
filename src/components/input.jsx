@@ -5,6 +5,7 @@ import {
   replaceMorse,
   reverseMorse,
 } from "../../morse";
+import { encrypt, decrypt } from "../../convert";
 
 export default function Input() {
   const [input, setInput] = useState("");
@@ -13,14 +14,36 @@ export default function Input() {
     dot: ".",
     dash: "-",
   });
-
+  const [key, setKey] = useState("");
   let output = "";
   if (isDecrypt) {
-    output = decodeMorseWithCase(
-      reverseMorse(input, mapping.dot, mapping.dash)
-    );
+    if (key) {
+      // Morse to base64
+      let base64 = decodeMorseWithCase(
+        reverseMorse(input, mapping.dot, mapping.dash)
+      );
+      // decrypt base64 to text
+      output = decrypt(base64, key);
+      // If the decrypt fails, use the base64
+      if (output == "") {
+        output = base64;
+      }
+    } else {
+      output = decodeMorseWithCase(
+        reverseMorse(input, mapping.dot, mapping.dash)
+      );
+    }
   } else {
-    output = replaceMorse(encodeMorse(input), mapping.dot, mapping.dash);
+    // If a key exists, encrypt the input and encode it into morse.
+    if (key && input != "") {
+      output = replaceMorse(
+        encodeMorse(encrypt(input, key)),
+        mapping.dot,
+        mapping.dash
+      );
+    } else {
+      output = replaceMorse(encodeMorse(input), mapping.dot, mapping.dash);
+    }
   }
 
   const toggleDecrypt = () => {
@@ -76,7 +99,7 @@ export default function Input() {
           placeholder={isDecrypt ? "Decoded output" : "Encoded output"}
         ></textarea>
       </div>
-      {/* input for key */}
+      {/* input for morse chars */}
       <div className="flex gap-2">
         <input
           type="text"
@@ -108,6 +131,15 @@ export default function Input() {
           }}
         />
       </div>
+      <input
+        type="text"
+        placeholder="Set password"
+        class="input input-bordered w-full max-w-xs"
+        value={key}
+        onChange={(e) => {
+          setKey(e.target.value);
+        }}
+      />
     </div>
   );
 }
