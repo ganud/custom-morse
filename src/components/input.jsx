@@ -50,6 +50,16 @@ export default function Input() {
     setisDecrypt(!isDecrypt);
     setInput(output);
   };
+
+  const swapMorseChars = () => {
+    let temp = mapping.dot;
+    setMapping((prevMapping) => ({
+      ...prevMapping,
+      dot: mapping.dash,
+      dash: temp,
+    }));
+  };
+
   return (
     <div className="flex flex-col grow px-10 py-10 gap-4">
       {/* Toggle for switching input and output */}
@@ -131,15 +141,31 @@ export default function Input() {
           }}
         />
       </div>
-      <input
-        type="text"
-        placeholder="Set password"
-        class="input input-bordered w-full max-w-xs"
-        value={key}
-        onChange={(e) => {
-          setKey(e.target.value);
-        }}
-      />
+      <div className="flex gap-2">
+        <input
+          type="text"
+          placeholder="Set password"
+          class="input input-bordered w-full max-w-xs"
+          value={key}
+          onChange={(e) => {
+            setKey(e.target.value);
+          }}
+        />
+        <button className="btn w-24" onClick={swapMorseChars}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 16 16"
+            fill="currentColor"
+            className="size-4"
+          >
+            <path
+              fillRule="evenodd"
+              d="M10.47 2.22a.75.75 0 0 1 1.06 0l2.25 2.25a.75.75 0 0 1 0 1.06l-2.25 2.25a.75.75 0 1 1-1.06-1.06l.97-.97H5.75a.75.75 0 0 1 0-1.5h5.69l-.97-.97a.75.75 0 0 1 0-1.06Zm-4.94 6a.75.75 0 0 1 0 1.06l-.97.97h5.69a.75.75 0 0 1 0 1.5H4.56l.97.97a.75.75 0 1 1-1.06 1.06l-2.25-2.25a.75.75 0 0 1 0-1.06l2.25-2.25a.75.75 0 0 1 1.06 0Z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </button>
+      </div>
     </div>
   );
 }
